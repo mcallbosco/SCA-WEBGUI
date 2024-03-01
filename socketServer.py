@@ -3,7 +3,7 @@ import asyncio
 import random
 import os
 import subprocess
-
+import ssl
 
 
 scaProcessingPath = '/home/ubuntu/SCAIN'
@@ -176,8 +176,9 @@ async def hello(websocket, path):
     await websocket.close()
 
 
+ssl_contexts = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 
-start_server = websockets.serve(hello, "172.31.0.162", 8008)
+start_server = websockets.serve(hello, "172.31.0.162", 8008, ssl_context = ssl_contexts)
 
 
 
