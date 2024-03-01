@@ -1,5 +1,5 @@
 document.getElementById('WaitText').hidden = true;
-var url = "ws:localhost:8008";
+var url = "ws:3.138.172.59:8008";
 
 
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
