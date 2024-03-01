@@ -6,22 +6,34 @@ import subprocess
 
 
 
-scaProcessingPath = '/home/mcall/SCATEMPIN/'
-scaOutputPath = '/home/aaron/SCATEMPOUT/'
+scaProcessingPath = '/home/mcall/SCATEMPIN'
+scaOutputPath = '/home/mcall/SCATEMPOUT'
+scaPath = "/home/mcall/SCA/SCA/core/src/a.out"
 
 async def hello(websocket, path):
+    skipCSS = False
     #generate a random sequence of numbers for the user ID
     userID = random.randint(0,10000000000000000000)
     userID = str(userID)
     #create a folder for the user
     data = await websocket.recv()
+    #make sure the file is not too large
+    if (len(data) > 1000000):
+        await websocket.send('Error: File too large')
+        await websocket.close()
+        return
     #save the data to a file
     with open(scaProcessingPath + '/' + userID + '.cpp', 'w') as f:
         f.write(data)
         f.close()
     print ('file written')
     #Run SCA on the data
-    
+    try:
+        
+        output = subprocess.check_output(['/home/mcall/SCA/SCA/core/src/a.out', scaProcessingPath + '/' + userID + '.cpp', scaOutputPath + '/' + userID + '.html'], universal_newlines=True)
+    except:
+        print('sca error bad exit code')
+        
     #open the SCA output file
     try:
         with open(scaOutputPath + '/' + userID + '.html', 'r') as f:
@@ -30,30 +42,26 @@ async def hello(websocket, path):
             os.remove(scaProcessingPath + '/' + userID + '.cpp')
             os.remove(scaOutputPath + '/' + userID + '.html')
     except:
-        scaOutput = 'Error: SCA did not run correctly'
+        scaOutput = 'Error: SCA did not run correctly. If this error is not due to the uploaded code, please contact the website admin. Here is the logs: ' + output
+        skipCSS = True
 
-        print('sca error')
     cssStuff = '''
 <style>
 .columnContainer{
-  float: left;
-  width: 50%;
-  margin-bottom: 2rem;
-  color: #f1c40f;
-  
+    float: left;
+    width: 50%;
+    margin-bottom: 2rem;
 }
 
 .sourcecode{
   position: relative;
-  border-radius: 15px;
-  border: 1px solid;
-  border-color: #f1c40f;
-  background-color: #1f2833;
+  border-radius: 25px;
+  border: 2px solid;
+  background-color: #beddf0;
   padding: 20px;
   width: 90%;
   margin: 0;
   font-family: "Lucida Console";
-  color:#f1c40f;
 }
 
 .components{
@@ -63,14 +71,12 @@ async def hello(websocket, path):
   flex-wrap: wrap;
   flex-direction: row;
   margin-top: 1rem;
-  color: #f1c40f;
 }
 
 .components > p {
   width: 1400px;
   text-align: center;
   margin-bottom: 1rem;
-  color: #f1c40f;
 }
 
 .correctComponent{
@@ -78,14 +84,13 @@ async def hello(websocket, path):
   border-radius: 25px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #66e766;
+  border: 2px solid #66e766;
   padding: 20px;
   max-width: 45%;
   height: auto;
   margin: 5px;
   font-family: "Lucida Console";
   font-size: 16px;
-  color: #f1c40f;
 }
 
 .wrongComponent{
@@ -93,29 +98,29 @@ async def hello(websocket, path):
   border-radius: 25px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #eb4040;
+  border: 2px solid #eb4040;
   padding: 20px;
   max-width: 45%;
   height: auto;
   margin: 5px;
   font-family: "Lucida Console";
   font-size: 16px;
-  color: #f1c40f;
 }
 
 .rule
 {
   position: relative;
   border-radius: 25px;
-  border: 1px solid;    scaOutput.
-  color: #fffbfc;
+  border: 2px solid;
+  padding: 20px;
+  width: 90%;
+  margin-top: .5rem;
   font-family: "Lucida Console";
 }
 .titleText {
   font-size: 2rem;
   margin-bottom: -1rem;
   text-align: center;
-  color: #f1c40f;
 }
 .entirePage {
   width: 1400px;
@@ -127,43 +132,44 @@ async def hello(websocket, path):
   border: 1px solid black;
   border-radius: 1rem;
   background-color: rgb(230,230,230);
-  margin-right: 1.5rem    scaOutput.
+  margin-right: 1.5rem;
+}
 
+.ruleContainer
 {
   position: relative;
   border-radius: 20px;
-  border: 1px solid;
+  border: 2px solid;
   padding: 5px;
   width: 90%;
   height: 530px;
-  margin: 0;cmdOutput
+  margin: 0;
 }
 
 #rcorners {
     border-radius: 25px;
-    border: 1px solid #227db3;
+    border: 2px solid #227db3;
     padding: 20px;
     width: 200px;
     height: 150px;
-    color: #f1c40f;
   }
 
   h1{
     font-size: 32px;
-    color: #f1c40f;
   }
 
   h2{
     font-style: italic;
-    font-size: 2cmdOutput0px;
-    color: #f1c40f;
+    font-size: 20px;
   }
 
+
   </style>'''
-    scaOutput = scaOutput.replace(str(userID) + '.cpp', '' )
-    scaOutput = scaOutput.replace('<link rel="stylesheet" href="../../core/src/htmlStyle.css">', '' )
-    #attach styling to scaOutput
-    scaOutput = cssStuff + scaOutput
+    if (not skipCSS):
+      scaOutput = scaOutput.replace(str(userID) + '.cpp', '' )
+      scaOutput = scaOutput.replace('<link rel="stylesheet" href="../../core/src/htmlStyle.css">', '' )
+      #attach styling to scaOutput
+      scaOutput = cssStuff + scaOutput
     #send the SCA output to the user
     await websocket.send(scaOutput)
     #end the connection
