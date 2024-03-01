@@ -6,9 +6,9 @@ import subprocess
 
 
 
-scaProcessingPath = '/home/mcall/SCATEMPIN'
-scaOutputPath = '/home/mcall/SCATEMPOUT'
-scaPath = "/home/mcall/SCA/SCA/core/src/a.out"
+scaProcessingPath = '/home/ubuntu/SCAIN'
+scaOutputPath = '/home/ubuntu/SCAOUT'
+scaPath = "/home/ubuntu/SCA/SCA/core/src/a.out"
 
 async def hello(websocket, path):
     skipCSS = False
@@ -177,7 +177,7 @@ async def hello(websocket, path):
 
 
 
-start_server = websockets.serve(hello, "localhost", 8008)
+start_server = websockets.serve(hello, "172.31.0.162", 8008)
 
 
 
