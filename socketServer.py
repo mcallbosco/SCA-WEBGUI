@@ -176,9 +176,10 @@ async def hello(websocket, path):
     await websocket.close()
 
 
-ssl_contexts = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context.load_cert_chain(certfile="/etc/ssl/certs/apache-selfsigned.crt", keyfile="/etc/ssl/private/apache-selfsigned.key")
 
-start_server = websockets.serve(hello, "172.31.0.162", 8008, ssl = ssl_contexts)
+start_server = websockets.serve(hello, "172.31.0.162", 8008, ssl = ssl_context)
 
 
 
