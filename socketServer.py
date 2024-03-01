@@ -29,10 +29,10 @@ async def hello(websocket, path):
     print ('file written')
     #Run SCA on the data
     try:
-        
-        output = subprocess.check_output(['/home/mcall/SCA/SCA/core/src/a.out', scaProcessingPath + '/' + userID + '.cpp', scaOutputPath + '/' + userID + '.html'], universal_newlines=True)
+        output = subprocess.check_output([scaPath, scaProcessingPath + '/' + userID + '.cpp', scaOutputPath + '/' + userID + '.html'], universal_newlines=True)
     except:
         print('sca error bad exit code')
+        output = "Error: server error"
         
     #open the SCA output file
     try:
