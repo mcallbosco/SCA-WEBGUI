@@ -6,8 +6,8 @@ import subprocess
 
 
 
-scaProcessingPath = '/home/ubuntu/SCAIN/'
-scaOutputPath = '/home/ubuntu/SCAOUT/'
+scaProcessingPath = '/home/ubuntu/SCAIN'
+scaOutputPath = '/home/ubuntu/SCAOUT'
 scaPath = "/home/ubuntu/SCA/SCA/core/src/a.out"
 
 async def hello(websocket, path):
