@@ -180,7 +180,7 @@ async def hello(websocket, path):
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 
 
-start_server = websockets.serve(hello, "10.182.0.2", 8080)
+start_server = websockets.serve(hello, "10.182.0.2", 8080, ssl=ssl_context)
 
 
 
