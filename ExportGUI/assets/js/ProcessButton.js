@@ -1,5 +1,8 @@
 document.getElementById('WaitText').hidden = true;
-var url = "wss:3.138.172.59:8008";
+if (location.protocol !== 'https:') {
+    location.replace(`https:${location.href.substring(location.protocol.length)}`);
+}
+var url = "ws:34.125.226.98:8080";
 
 
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
