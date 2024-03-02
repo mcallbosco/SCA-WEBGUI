@@ -6,9 +6,9 @@ import subprocess
 import ssl
 
 
-scaProcessingPath = '/home/ubuntu/SCAIN'
-scaOutputPath = '/home/ubuntu/SCAOUT'
-scaPath = "/home/ubuntu/SCA/SCA/core/src/a.out"
+scaProcessingPath = '/home/adjfabc/SCAIN'
+scaOutputPath = '/home/adjfabc/SCAOUT'
+scaPath = "/home/adjfabc/SCA/SCA/core/src/a.out"
 
 async def hello(websocket, path):
     skipCSS = False
@@ -180,7 +180,7 @@ async def hello(websocket, path):
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 
 
-start_server = websockets.serve(hello, "172.31.0.162", 8080)
+start_server = websockets.serve(hello, "10.182.0.2", 8080)
 
 
 
