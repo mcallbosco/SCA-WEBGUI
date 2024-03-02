@@ -1,7 +1,5 @@
 document.getElementById('WaitText').hidden = true;
-if (location.protocol !== 'https:') {
-    location.replace(`https:${location.href.substring(location.protocol.length)}`);
-}
+
 var url = "ws:34.125.226.98:8080";
 
 
