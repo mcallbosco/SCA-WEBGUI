@@ -1,6 +1,6 @@
 document.getElementById('WaitText').hidden = true;
 
-var url = "ws:3.138.172.59:8080";
+var url = "ws:13.58.90.158:8080";
 
 
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
